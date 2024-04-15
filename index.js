@@ -33,3 +33,5 @@ app.get('/price', (req, res) => {
 app.listen(3000, () => {
     console.log('Proxy server is running on port 3000.');
 });
+
+module.exports = app;
