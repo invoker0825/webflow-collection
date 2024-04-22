@@ -82,7 +82,7 @@ app.get('/get-fare', (req, res) => {
     };
 
     fetch(
-        'http://eurosofttechbookingapi.co.uk/api/jobs/GetFaresFromDispatch',
+        'https://eurosofttechbookingapi.co.uk/api/jobs/GetFaresFromDispatch',
         options
     )
         .then(response => response.json())
