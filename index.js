@@ -78,11 +78,11 @@ app.get('/get-fare', (req, res) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(bodyData)
+        body: req.body
     };
 
     fetch(
-        'https://eurosofttechbookingapi.co.uk/api/jobs/GetFaresFromDispatch',
+        'http://eurosofttechbookingapi.co.uk/api/jobs/GetFaresFromDispatch',
         options
     )
         .then(response => response.json())
