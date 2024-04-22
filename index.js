@@ -72,7 +72,7 @@ let bodyData = {
     JourneyTypeID: 1
 }
 
-app.get('/get-fare', (req, res) => {
+app.post('/get-fare', (req, res) => {
     const options = {
         method: 'POST',
         headers: {
