@@ -57,15 +57,19 @@ app.get('/block-countries', (req, res) => {
 });
 
 let bodyData = {
-    JourneyTypeID: 1,
-    pickUpLocationType: "AirPort",
-    pickUpLocation: "Heathrow Terminal 1 TW6 1JS",
+    pickUpLocation: "Heathrow Terminal 1  TW6 1JS",
+    DropoffLocation: "Porlock Avenue HARROW HA2 0AD",
+    pickUpLocationType: "Airport",
     DropoffLocationType: "Address",
-    DropoffLocation: "South Hill Avenue HA2 0DU",
-    PickupDate: "26/04/2016",
-    PickupTimeHr: "16",
-    PickupTimeMinute: "19",
-    companyaccountcode: "$tAr_pr!vAte_h!re_$toke"
+    PickupDate: "29-Apr-2024",
+    PickupTimeHr: 23,
+    PickupTimeMinute: 59,
+    pickUpLocationCoordinates: "51.4724350,-0.4504564",
+    DropoffLocationCoordinates: "51.5735969543457,-0.352869987487793",
+    Distance: "10.9",
+    CompanyAccountCode: "@!RP0RT_EXECUT!VE_L!M!TED",
+    IsLive: true,
+    JourneyTypeID: 1
 }
 
 app.get('/aaa', (req, res) => {
