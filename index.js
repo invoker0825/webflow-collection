@@ -78,7 +78,7 @@ app.post('/get-fare', (req, res) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: req.body
+        body: JSON.stringify(req.body)
     };
 
     fetch(
