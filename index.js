@@ -87,7 +87,7 @@ app.get('/get-fare', (req, res) => {
     )
         .then(response => response.json())
         .then(response => {
-            res.send(response.data);
+            res.send(response);
         })
         .catch(err => console.log('err-------------------', err));
 });
