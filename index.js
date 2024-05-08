@@ -106,8 +106,8 @@ app.post('/get-fare', (req, res) => {
 
 app.post('/get-uk-fare', async (req, res) => {
     try {
+        console.log('---------------------------', process.env.GCLOUD_PROJECT)
         const auth = await getAuthToken();
-        console.log('---------------------------', auth)
         const response = await getSpreadSheet({
             spreadsheetId,
             auth
@@ -115,10 +115,9 @@ app.post('/get-uk-fare', async (req, res) => {
         console.log('output for getSpreadSheet', JSON.stringify(response.data, null, 2));
         res.send(JSON.stringify(response.data, null, 2));
     } catch(error) {
-      console.log(error.message, error.stack);
+      console.log(error.message,'------------', error.stack);
       res.send("errorrrrrrrrrrrrrr");
     }
-    // testGetSpreadSheetValues();
 });
   
 async function testGetSpreadSheet() {
