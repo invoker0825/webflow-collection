@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "eastern-adapter-372312",
+  "private_key_id": "be8ae9c9943765b0f5a23a630a4c07c4ec73e322",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC8Qp6iq74c9pXv\nq/8toeb9PlbiaOmFsNir3HfYYm2hnwKAEDBkjpvVxwWUkzk7BFA4N/PgvYCdFRGV\nIXT35wEspmNCPXX1pf2SCr3bsUX8PuW/ciBYkH9LjwP+W/BOGmDPUxZHKy5+Apf/\n29w6Fr+uhKb9qJiVmKxcm0F2peQd4hXLfcuRiV0g8+Bpjk7G+xonRelP55voynNe\nrTWzjc1xyFrTZBSgRq7i3j58LgukwjraKEzlKmT3cpAjJR+KVLy70v+YixOUQOzt\n+B2D4euHApS6/5W/97tS0A2kdzOgzzfZPZRE1e6prcPOJs+CoTLOkmUChrR/ieqZ\n+p3vNCh1AgMBAAECggEATNawItsQPIgUyH8eJwTm38Qa+EwzzCJTPUo+DC6YapgZ\nECYLam+egVG7IFo6yLDJATktLDSMkxCvXXwLXseFfjDnYHjvdXTrmzkRJuMjGoKd\niVdOhndrzW4xBheGbIptqxFRjXi9gCcU3RRivb7dO6De+7ddl+l5qE6iGIg7JEqY\ntsXx/QzWSw0KH2BCnOes4kmZOBYq709C0byGP79gYT7AJauMIXWJy6M2K3CZ6B4x\nux/x4R5fXbpX2LMynOB1OVmc3UIRNqlqEoi9W969idv3u1+jjI6MjgaoWHErOW3G\nhGWrxpnqU7MearnXQJQFCg72kUK4wPUDjuYGfF2pvQKBgQDf3H2I9dALsAQ7Y/Fy\nTfO02+dHYInQFbyw8UX9VJLbPCmGgYS7Y37gPuu0D/1sdYP5tXNUkVD2c4w7N7QF\nyJzTl/ur9cdE3t8e3M/nhY2MQ5nnVIV4vNnIHuqyjwt6kgIs2BbutjbhOUFT1+bY\ntfkITGQPi+hOnNB/kFweaDpXawKBgQDXSbGhs0m7os326/+g3c2QPzhbAHmDEyoR\nUQ1feSi195Lt9u/cCWZgp7VjKv+KjaebgSkbf5MG3cTgo2eTNHyQOQga8RIqcaLq\nT1aNU9wYqnpR0UBASXfrto8rmozoJfYhI6kDhGcr25RkkxaDv8DaFldT4dCJliTN\nn6ZGdufXnwKBgCOQuDEGPKNet41n93gdglZ9iWUBpWN10KCb9G6m/R3vlPlVomzT\nBdlCpdfZon2Uvf7yIPySibZd7S2LUAKLOL81KjrLtXjvn6sbkbxKr45VPyJNf1cL\nSd5NayQrLbuvbsEJI7uRH27w1bwoVPihEIuM92iw5Zt3tnhNyxTZoks5AoGAdgk1\nlw6RsorEmkkyUqTJe/jtkRdlh/QN8Iib6GipZXtj14y4Xc/ZjczlqoV8rh6UcrIS\nM71ygyU8OF3e/9qbIQfj5cGe0B6V0BnHvpzn4640en9b1uNxGI9zV9jYwL9vfyPq\nGr+RQX6Wkb4DbiDIP8pX/umkSItFimep5qBy5MkCgYA70hTLjjuo4c7yw7XeiOZw\nFDpaqryKAy2Zh0kRRZ99yNiSnpUnyKzRwAvtcOVmwaz9tOeX1ZuzASLuAG0RBCJu\nwBk2TVCXRk98QNE+x3n7N5B426OboBtG1k/X9+VVWqtEbB6lzBuCShDyQIvhC9pD\nqjwR43A1tQ/uH/X3BvZK6w==\n-----END PRIVATE KEY-----\n",
+  "client_email": "smash-660@eastern-adapter-372312.iam.gserviceaccount.com",
+  "client_id": "109945739182224640475",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/smash-660%40eastern-adapter-372312.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

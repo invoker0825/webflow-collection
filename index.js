@@ -1,6 +1,16 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
 const bodyParser = require('body-parser');
+const { google } = require('googleapis');
+const credentials = require('./eastern-adapter-372312-be8ae9c99437.json');
+const {
+    getAuthToken,
+    getSpreadSheet,
+    getSpreadSheetValues
+} = require('./googleSheetsService.js');
+const spreadsheetId = '15uvjqCQW2NEbmzzRDYjxTDVRF0I8NfdV';
+const sheetName = 0;
 
 const app = express();
 app.use(cors());
@@ -93,6 +103,39 @@ app.post('/get-fare', (req, res) => {
         })
         .catch(err => console.log('err-------------------', err));
 });
+
+app.post('/get-uk-fare', (req, res) => {
+    testGetSpreadSheet();
+    // testGetSpreadSheetValues();
+});
+  
+async function testGetSpreadSheet() {
+    try {
+        const auth = await getAuthToken();
+        console.log('---------------------------', auth)
+        const response = await getSpreadSheet({
+            spreadsheetId,
+            auth
+        })
+        console.log('output for getSpreadSheet', JSON.stringify(response.data, null, 2));
+    } catch(error) {
+      console.log(error.message, error.stack);
+    }
+}
+  
+async function testGetSpreadSheetValues() {
+    try {
+      const auth = await getAuthToken();
+      const response = await getSpreadSheetValues({
+        spreadsheetId,
+        sheetName,
+        auth
+      })
+      console.log('output for getSpreadSheetValues', JSON.stringify(response.data, null, 2));
+    } catch(error) {
+      console.log(error.message, error.stack);
+    }
+}
 
 app.listen(3000, () => {
     console.log('Proxy server is running on port 3000.');
