@@ -104,8 +104,20 @@ app.post('/get-fare', (req, res) => {
         .catch(err => console.log('err-------------------', err));
 });
 
-app.post('/get-uk-fare', (req, res) => {
-    testGetSpreadSheet();
+app.post('/get-uk-fare', async (req, res) => {
+    try {
+        const auth = await getAuthToken();
+        console.log('---------------------------', auth)
+        const response = await getSpreadSheet({
+            spreadsheetId,
+            auth
+        })
+        console.log('output for getSpreadSheet', JSON.stringify(response.data, null, 2));
+        res.send(JSON.stringify(response.data, null, 2));
+    } catch(error) {
+      console.log(error.message, error.stack);
+      res.send("errorrrrrrrrrrrrrr");
+    }
     // testGetSpreadSheetValues();
 });
   
