@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 const bodyParser = require('body-parser');
 const { google } = require('googleapis');
@@ -99,7 +100,7 @@ app.post('/get-fare', (req, res) => {
 
 app.post('/get-uk-fare', async (req, res) => {
     const auth = new google.auth.GoogleAuth({
-        keyFile: 'key.json',
+        keyFile: path.join(__dirname, 'key.json'),
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
     
