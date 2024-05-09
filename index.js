@@ -99,7 +99,7 @@ app.post('/get-fare', (req, res) => {
 
 app.post('/get-uk-fare', async (req, res) => {
     const auth = new google.auth.GoogleAuth({
-        keyFile: './key.json',
+        keyFile: 'key.json',
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
     
