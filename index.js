@@ -3,13 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const bodyParser = require('body-parser');
 const { google } = require('googleapis');
-const {
-    getAuthToken,
-    getSpreadSheet,
-    getSpreadSheetValues
-} = require('./googleSheetsService.js');
 const spreadsheetId = '1XZwd9LAAMsuEJ0HIVkal0EviHL0giet3peWthWu_OV4';
-const sheetName = "Sheet1";
 
 const app = express();
 app.use(cors());
@@ -104,17 +98,25 @@ app.post('/get-fare', (req, res) => {
 });
 
 app.post('/get-uk-fare', async (req, res) => {
+    const auth = new google.auth.GoogleAuth({
+        keyFile: './key.json',
+        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+    
+    const sheets = google.sheets({ version: 'v4', auth });
+    
     try {
-        const auth = await getAuthToken();
-        const response = await getSpreadSheetValues({
-            spreadsheetId,
-            sheetName,
-            auth
-        })
-        res.send(JSON.stringify(response.data, null, 2));
-    } catch(error) {
-      console.log(error.message,'------------', error.stack);
-      res.send("errorrrrrrrrrrrrrr");
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId: spreadsheetId,
+            range: 'Sheet1',
+        });
+    
+        const values = response.data.values;
+        console.log('Data:', values);
+        res.send(values);
+    } catch (error) {
+        console.error('Error:', error.message);
+        res.send('errororororor')
     }
 });
 
