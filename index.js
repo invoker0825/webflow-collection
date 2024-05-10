@@ -146,7 +146,6 @@ app.post('/get-uk-fare', async (req, res) => {
             console.log('Error:', error);
         });
         let result = [];
-        console.log('===============================', priceValues[0].slice(2, 10))
         priceValues[0].slice(2, 10).forEach((pValue, index) => {
             let temp = {
                 id: pValue.toLowerCase().replaceAll(' ', '-'),
@@ -160,6 +159,7 @@ app.post('/get-uk-fare', async (req, res) => {
             }
             result.push(temp);
         })
+        console.log('===============================', result)
         res.send(result)
     } catch (error) {
         console.error('Error:', error.message);
