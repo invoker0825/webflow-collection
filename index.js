@@ -160,7 +160,7 @@ app.post('/get-uk-fare', async (req, res) => {
             result.push(temp);
         })
         console.log('===============================', result)
-        res.send(result)
+        res.status(200).send({ data: result });
     } catch (error) {
         console.error('Error:', error.message);
         res.send('errororororor');
