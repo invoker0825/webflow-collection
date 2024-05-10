@@ -99,6 +99,9 @@ app.post('/get-fare', (req, res) => {
 });
 
 app.post('/get-uk-fare', async (req, res) => {
+    console.log('--------------------', req.body)
+
+    const apiKey = 'AIzaSyCwtQ_zCdXd_7xmjaAToQ9NeurpHbVYJC8';
     const auth = new google.auth.GoogleAuth({
         keyFile: path.join(__dirname, 'key.json'),
         scopes: ['https://www.googleapis.com/auth/spreadsheets'],
@@ -112,12 +115,55 @@ app.post('/get-uk-fare', async (req, res) => {
             range: 'Sheet1',
         });
     
-        const values = response.data.values;
-        console.log('Data:', values);
-        res.send(values);
+        const priceValues = response.data.values.filter(v => v.length > 0);
+        let pickupPostcode = null;
+        let dropOffPostcode = null;
+        
+        await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${req.body.pickUpLocationCoordinates}&key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'OK') {
+                const results = data.results;
+
+                for (const result of results) {
+                    for (const component of result.address_components) {
+                        if (component.types.includes('postal_code')) {
+                            pickupPostcode = component.long_name;
+                            break;
+                        }
+                    }
+                    if (pickupPostcode) {
+                        console.log('11111111111111111111111111111111111', pickupPostcode)
+                        break;
+                    }
+                }
+            } else {
+                console.log('Geocoding API request failed.');
+                res.send('error')
+            }
+        })
+        .catch(error => {
+            console.log('Error:', error);
+        });
+        let result = [];
+        console.log('===============================', priceValues[0].slice(2, 10))
+        priceValues[0].slice(2, 10).forEach((pValue, index) => {
+            let temp = {
+                id: pValue.toLowerCase().replaceAll(' ', '-'),
+                price: parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[index])
+            }
+            if (req.body.DropoffLocationType === "Airport" && priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9]) {
+                temp.price += parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
+            }
+            if (req.body.pickUpLocationType === "Airport" && priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[10]) {
+                temp.price += parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[10])
+            }
+            result.push(temp);
+        })
+        res.send(result)
     } catch (error) {
         console.error('Error:', error.message);
-        res.send('errororororor')
+        res.send('errororororor');
     }
 });
 
