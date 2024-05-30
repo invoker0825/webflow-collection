@@ -145,20 +145,67 @@ app.post('/get-uk-fare', async (req, res) => {
         .catch(error => {
             console.log('Error:', error);
         });
-        let result = [];
-        priceValues[0].slice(2, 10).forEach((pValue, index) => {
-            let temp = {
-                id: pValue.toLowerCase().replaceAll(' ', '-'),
-                price: parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[index])
+        
+        await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${req.body.DropoffLocationCoordinates}&key=${apiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'OK') {
+                const results = data.results;
+
+                for (const result of results) {
+                    for (const component of result.address_components) {
+                        if (component.types.includes('postal_code')) {
+                            dropOffPostcode = component.long_name;
+                            break;
+                        }
+                    }
+                    if (dropOffPostcode) {
+                        console.log('222222222222222222222222222222222222222222222222222222222', dropOffPostcode)
+                        break;
+                    }
+                }
+            } else {
+                console.log('Geocoding API request failed.');
+                res.send('error')
             }
-            if (req.body.DropoffLocationType === "Airport" && priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9]) {
-                temp.price += parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
-            }
-            if (req.body.pickUpLocationType === "Airport" && priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[10]) {
-                temp.price += parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[10])
-            }
-            result.push(temp);
         })
+        .catch(error => {
+            console.log('Error:', error);
+        });
+
+        console.log('------------------------------------->>>>>>>>>>>>>>>>>>>>>', priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0]).length)
+        console.log('======================================>>>>>>>>>>>>>>>>>>>>>', priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0]).length)
+        let result = [];
+        if (priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0]).length > 0) {
+            priceValues[0].slice(2, 10).forEach((pValue, index) => {
+                let temp = {
+                    id: pValue.toLowerCase().replaceAll(' ', '-'),
+                    price: parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[index])
+                }
+                if (req.body.DropoffLocationType === "Airport" && priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9]) {
+                    temp.price += parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
+                }
+                if (req.body.pickUpLocationType === "Airport" && priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[10]) {
+                    temp.price += parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[10])
+                }
+                result.push(temp);
+            })
+        }
+        if (priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0]).length > 0) {
+            priceValues[0].slice(2, 10).forEach((pValue, index) => {
+                let temp = {
+                    id: pValue.toLowerCase().replaceAll(' ', '-'),
+                    price: parseFloat(priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[index])
+                }
+                if (req.body.pickUpLocationType === "Airport" && priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[9]) {
+                    temp.price += parseFloat(priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[9])
+                }
+                if (req.body.pickUpLocationType === "Airport" && priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10]) {
+                    temp.price += parseFloat(priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10])
+                }
+                result.push(temp);
+            })
+        }
         console.log('===============================', result)
         res.status(200).send({ data: result });
     } catch (error) {
