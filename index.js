@@ -133,7 +133,7 @@ app.post('/get-uk-fare', async (req, res) => {
                         }
                     }
                     if (pickupPostcode) {
-                        console.log('11111111111111111111111111111111111', pickupPostcode)
+                        console.log('pickupPostcode---------------------------------', pickupPostcode)
                         break;
                     }
                 }
@@ -160,7 +160,7 @@ app.post('/get-uk-fare', async (req, res) => {
                         }
                     }
                     if (dropOffPostcode) {
-                        console.log('222222222222222222222222222222222222222222222222222222222', dropOffPostcode)
+                        console.log('dropOffPostcode-------------------------', dropOffPostcode)
                         break;
                     }
                 }
@@ -180,13 +180,7 @@ app.post('/get-uk-fare', async (req, res) => {
             priceValues[0].slice(2, 10).forEach((pValue, index) => {
                 let temp = {
                     id: pValue.toLowerCase().replaceAll(' ', '-'),
-                    price: parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[index])
-                }
-                if (req.body.DropoffLocationType === "Airport" && priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9]) {
-                    temp.price += parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
-                }
-                if (req.body.pickUpLocationType === "Airport" && priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[10]) {
-                    temp.price += parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[10])
+                    price: parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
                 }
                 result.push(temp);
             })
@@ -195,13 +189,7 @@ app.post('/get-uk-fare', async (req, res) => {
             priceValues[0].slice(2, 10).forEach((pValue, index) => {
                 let temp = {
                     id: pValue.toLowerCase().replaceAll(' ', '-'),
-                    price: parseFloat(priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[index])
-                }
-                if (req.body.pickUpLocationType === "Airport" && priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[9]) {
-                    temp.price += parseFloat(priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[9])
-                }
-                if (req.body.pickUpLocationType === "Airport" && priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10]) {
-                    temp.price += parseFloat(priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10])
+                    price: parseFloat(priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10])
                 }
                 result.push(temp);
             })
