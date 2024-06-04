@@ -31,6 +31,7 @@ app.get('/price', (req, res) => {
                 .forEach(item => {
                     result.push(item.fieldData);
                 });
+                console.log('=================', result)
             res.send(result);
         })
         .catch(err => console.error(err));
@@ -173,23 +174,23 @@ app.post('/get-uk-fare', async (req, res) => {
             console.log('Error:', error);
         });
 
-        console.log('------------------------------------->>>>>>>>>>>>>>>>>>>>>', priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0]).length)
-        console.log('======================================>>>>>>>>>>>>>>>>>>>>>', priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0]).length)
+        console.log('------------------------------------->>>>>>>>>>>>>>>>>>>>>', priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0])).length)
+        console.log('======================================>>>>>>>>>>>>>>>>>>>>>', priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0])).length)
         let result = [];
-        if (priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0]).length > 0) {
+        if (priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0])).length > 0) {
             priceValues[0].slice(2, 10).forEach((pValue, index) => {
                 let temp = {
                     id: pValue.toLowerCase().replaceAll(' ', '-'),
-                    price: parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[0] === pickupPostcode.split(' ')[0] && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
+                    price: parseFloat(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0]) && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0]) && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
                 }
                 result.push(temp);
             })
         }
-        if (priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0]).length > 0) {
+        if (priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0])).length > 0) {
             priceValues[0].slice(2, 10).forEach((pValue, index) => {
                 let temp = {
                     id: pValue.toLowerCase().replaceAll(' ', '-'),
-                    price: parseFloat(priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[1] === dropOffPostcode.split(' ')[0] && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10])
+                    price: parseFloat(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0]) && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0]) && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10])
                 }
                 result.push(temp);
             })
