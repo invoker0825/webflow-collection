@@ -175,24 +175,28 @@ app.post('/get-uk-fare', async (req, res) => {
         });
 
         console.log('------------------------------------->>>>>>>>>>>>>>>>>>>>>', priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0])).length)
-        console.log('======================================>>>>>>>>>>>>>>>>>>>>>', priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0])).length)
+        console.log('======================================>>>>>>>>>>>>>>>>>>>>>', priceValues.filter(p => p[1].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0])).length)
         let result = [];
         if (priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0])).length > 0) {
             priceValues[0].slice(2, 10).forEach((pValue, index) => {
-                let temp = {
-                    id: pValue.toLowerCase().replaceAll(' ', '-'),
-                    price: parseFloat(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0]) && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0]) && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
+                if(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0]) && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase())).length > 0) {
+                    let temp = {
+                        id: pValue.toLowerCase().replaceAll(' ', '-'),
+                        price: parseFloat(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0]) && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0]) && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
+                    }
+                    result.push(temp);
                 }
-                result.push(temp);
             })
         }
         if (priceValues.filter(p => p[1].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0])).length > 0) {
             priceValues[0].slice(2, 10).forEach((pValue, index) => {
-                let temp = {
-                    id: pValue.toLowerCase().replaceAll(' ', '-'),
-                    price: parseFloat(priceValues.filter(p => p[1].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0]) && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[1].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0]) && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10])
+                if (priceValues.filter(p => p[1].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0]) && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase())).length > 0) {
+                    let temp = {
+                        id: pValue.toLowerCase().replaceAll(' ', '-'),
+                        price: parseFloat(priceValues.filter(p => p[1].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0]) && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[1].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0]) && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10])
+                    }
+                    result.push(temp);
                 }
-                result.push(temp);
             })
         }
         console.log('===============================', result)
