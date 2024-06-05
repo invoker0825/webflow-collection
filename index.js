@@ -101,6 +101,7 @@ app.post('/get-fare', (req, res) => {
 
 app.post('/get-uk-fare', async (req, res) => {
     console.log('--------------------', req.body)
+    let flag = 0;
 
     const apiKey = 'AIzaSyCwtQ_zCdXd_7xmjaAToQ9NeurpHbVYJC8';
     const auth = new google.auth.GoogleAuth({
@@ -185,6 +186,7 @@ app.post('/get-uk-fare', async (req, res) => {
                         price: parseFloat(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0]) && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[0].replaceAll(' ', '').split(',').includes(pickupPostcode.split(' ')[0]) && req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
                     }
                     result.push(temp);
+                    flag = 1;
                 }
             })
         }
@@ -194,6 +196,25 @@ app.post('/get-uk-fare', async (req, res) => {
                     let temp = {
                         id: pValue.toLowerCase().replaceAll(' ', '-'),
                         price: parseFloat(priceValues.filter(p => p[1].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0]) && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[index]) + parseFloat(priceValues.filter(p => p[1].replaceAll(' ', '').split(',').includes(dropOffPostcode.split(' ')[0]) && req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10])
+                    }
+                    result.push(temp);
+                    flag = 1;
+                }
+            })
+        }
+        if (flag === 0) {
+            priceValues[0].slice(2, 10).forEach((pValue, index) => {
+                if (priceValues.filter(p => req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase())).length > 0) {
+                    let temp = {
+                        id: pValue.toLowerCase().replaceAll(' ', '-'),
+                        price: req.body.allPrices[pValue.toLowerCase().replaceAll(' ', '-')] + parseFloat(priceValues.filter(p => req.body.pickUpLocation.toLowerCase().includes(p[0].toLowerCase()))[0].slice(2, 15)[10])
+                    }
+                    result.push(temp);
+                }
+                if(priceValues.filter(p => req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase())).length > 0) {
+                    let temp = {
+                        id: pValue.toLowerCase().replaceAll(' ', '-'),
+                        price: req.body.allPrices[pValue.toLowerCase().replaceAll(' ', '-')] + parseFloat(priceValues.filter(p => req.body.DropoffLocation.toLowerCase().includes(p[1].toLowerCase()))[0].slice(2, 15)[9])
                     }
                     result.push(temp);
                 }
