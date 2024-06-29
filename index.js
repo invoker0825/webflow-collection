@@ -99,6 +99,28 @@ app.post('/get-fare', (req, res) => {
         .catch(err => console.log('err-------------------', err));
 });
 
+app.post('/add-email', async (req, res) => {
+    console.log('--------------------', req.body)
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            authorization: 'Bearer fd4227da24b4d41edf4218a9cc8d54a8d32ee44ff716483dee0ee162b08201cf'
+        },
+        body: JSON.stringify(req.body)
+    };
+
+    fetch(
+        'https://api.webflow.com/v2/collections/667ef41115cbd92530b80ce4/items/live',
+        options
+    )
+        .then(response => response.json())
+        .then(response => {
+            res.send(response);
+        })
+        .catch(err => console.log('err-------------------', err));
+})
+
 app.post('/get-uk-fare', async (req, res) => {
     console.log('--------------------', req.body)
     let flag = 0;
